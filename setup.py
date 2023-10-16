@@ -33,6 +33,11 @@ if platform.system() == "Windows":
     main_module_kwargs['include_dirs'] = ['V:/hunspell-1.3.3/src/hunspell']
     main_module_kwargs['library_dirs'] = ['V:/hunspell-1.3.3/src/win_api/x64/Release/libhunspell']
     main_module_kwargs['extra_compile_args'] = ['/MT']
+elif platform.system() == "Darwin":
+    main_module_kwargs['define_macros'] = [('_LINUX', None)]
+    main_module_kwargs['libraries'] = [os.popen("pkg-config --libs-only-l hunspell").read()[2:].strip()]
+    main_module_kwargs['include_dirs'] = [os.popen("pkg-config --cflags hunspell").read()[2:].strip()],
+    main_module_kwargs['extra_compile_args'] = ['-Wall']
 else:
     main_module_kwargs['define_macros'] = [('_LINUX', None)]
     main_module_kwargs['libraries'] = ['hunspell']
